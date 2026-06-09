@@ -46,3 +46,7 @@ CODE_MAP.md
 
 # Release build artifacts
 build/
+
+# Editor / sed backups
+*.bak
+*~
