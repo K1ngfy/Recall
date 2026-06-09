@@ -246,7 +246,10 @@ final class ListViewModel {
 
     /// Double-click / Enter → copy + auto-paste at the current cursor.
     /// Text / link go through PasteService; images / files are only copied to the clipboard.
-    /// Double-clicking a file additionally triggers "open with default app" (pasting into Finder is meaningless).
+    /// 6.9 security: files are **revealed in Finder** instead of being opened —
+    /// a copied .command / .app / .scpt path would otherwise execute via
+    /// LaunchServices on double-click, which is a real RCE if an attacker
+    /// can plant the path in the user's clipboard.
     func activateAndPaste(_ item: ClipItemViewData) {
         switch item.contentType {
         case .text, .link, .snippet:
@@ -258,7 +261,11 @@ final class ListViewModel {
         case .file:
             copyToPasteboard(item)
             if let path = item.textContent {
-                NSWorkspace.shared.open(URL(fileURLWithPath: path))
+                // 6.9 fix: 不再直接 NSWorkspace.shared.open(URL) —— 防止
+                // 复制到剪贴板的 .command/.app/.scpt 在双击时被 LaunchServices 执行。
+                // 改为在 Finder 中选中文件,让用户手动确认后再打开。
+                let url = URL(fileURLWithPath: path)
+                NSWorkspace.shared.activateFileViewerSelecting([url])
             }
         }
     }

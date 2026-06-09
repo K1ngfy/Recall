@@ -6,6 +6,9 @@ import SwiftUI
 /// - favorites empty / snippets empty: side entry is empty
 struct EmptyStateView: View {
     let kind: Kind
+    /// 6.9 compact 模式:horizontal(top/bottom)和 center dock 下面板较矮,
+    /// 默认 140pt illustration 占太大比例,启用此模式后整体缩小一档。
+    var compact: Bool = false
 
     enum Kind {
         case noHistory                                // globally empty
@@ -54,21 +57,21 @@ struct EmptyStateView: View {
     }
 
     var body: some View {
-        VStack(spacing: 18) {
+        VStack(spacing: compact ? 10 : 18) {
             Spacer(minLength: 0)
             illustration
-                .fixedSize()
-            VStack(spacing: 6) {
+            VStack(spacing: compact ? 3 : 6) {
                 Text(kind.title)
-                    .font(.system(size: 14, weight: .semibold))
+                    .font(.system(size: compact ? 12 : 14, weight: .semibold))
                     .foregroundStyle(.primary)
                     .fixedSize(horizontal: false, vertical: true)
                 Text(kind.subtitle)
-                    .font(.system(size: 11))
+                    .font(.system(size: compact ? 10 : 11))
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
                     .fixedSize(horizontal: false, vertical: true)
-                    .padding(.horizontal, 32)
+                    .padding(.horizontal, compact ? 24 : 32)
+                    .lineLimit(compact ? 2 : nil)
             }
             Spacer(minLength: 0)
         }
@@ -77,17 +80,20 @@ struct EmptyStateView: View {
 
     /// Gradient circle + large icon (replaces a single SF Symbol for a more refined look)
     private var illustration: some View {
-        ZStack {
+        let outer: CGFloat = compact ? 76 : 140
+        let inner: CGFloat = compact ? 48 : 84
+        let icon:  CGFloat = compact ? 22 : 36
+        return ZStack {
             Circle()
                 .fill(
                     RadialGradient(
                         colors: [Color.accentColor.opacity(0.18), Color.accentColor.opacity(0.0)],
                         center: .center,
-                        startRadius: 20,
-                        endRadius: 70
+                        startRadius: compact ? 12 : 20,
+                        endRadius:   compact ? 40 : 70
                     )
                 )
-                .frame(width: 140, height: 140)
+                .frame(width: outer, height: outer)
 
             Circle()
                 .fill(
@@ -97,11 +103,12 @@ struct EmptyStateView: View {
                         endPoint: .bottomTrailing
                     )
                 )
-                .frame(width: 84, height: 84)
+                .frame(width: inner, height: inner)
 
             Image(systemName: kind.iconName)
-                .font(.system(size: 36, weight: .light))
+                .font(.system(size: icon, weight: .light))
                 .foregroundStyle(Color.accentColor)
         }
+        .frame(width: outer, height: outer)   // 固定容器尺寸,防止 RadialGradient 撑出
     }
 }

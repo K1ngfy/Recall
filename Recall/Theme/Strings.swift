@@ -23,6 +23,8 @@ enum Strings {
         static let continue_       = String(localized: "onboarding.continue",         defaultValue: "Get Started")
         static let next            = String(localized: "onboarding.next",            defaultValue: "Next")
         static let openSettings    = String(localized: "onboarding.openSettings",    defaultValue: "Open Settings")
+        // 6.9 onboarding 底部"以后再说"按钮 - 替代之前误用的 Strings.MenuBar.welcome
+        static let close           = String(localized: "onboarding.close",           defaultValue: "Close")
     }
 
     // MARK: - Menu Bar
@@ -98,6 +100,11 @@ enum Strings {
         static let hotkeyHint          = String(localized: "settings.hotkey.hint",          defaultValue: "Click the key combo to record a new shortcut. ESC to cancel. A modifier key is required.")
 
         static let findInRecall        = String(localized: "settings.findInRecall", defaultValue: "Find in Recall")
+
+        // 6.9 Hover preview toggle
+        static let hoverPreviewSection     = String(localized: "settings.hoverPreview.section",     defaultValue: "Hover Preview")
+        static let hoverPreviewToggle      = String(localized: "settings.hoverPreview.toggle",      defaultValue: "Show preview on hover")
+        static let hoverPreviewDescription = String(localized: "settings.hoverPreview.description", defaultValue: "Hover any clip for 0.5s to peek the full content. Disable to keep the panel quieter when scanning many rows.")
     }
 
     // MARK: - Panel / Header
@@ -222,7 +229,7 @@ enum Strings {
         static let usesSuffix     = String(localized: "hover.snippet.uses",        defaultValue: "uses")
         static let imageUnavailable = String(localized: "hover.imageUnavailable", defaultValue: "Image unavailable")
         static let fileMoved      = String(localized: "hover.fileMoved",           defaultValue: "File no longer at this path")
-        static let fileOpenHint   = String(localized: "hover.fileOpenHint",        defaultValue: "Double-click to open")
+        static let fileOpenHint   = String(localized: "hover.fileOpenHint",        defaultValue: "Double-click to reveal in Finder")
         static let linkOpenHint   = String(localized: "hover.linkOpenHint",        defaultValue: "Double-click to open in browser")
     }
 

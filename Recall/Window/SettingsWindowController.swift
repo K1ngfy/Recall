@@ -35,8 +35,10 @@ final class SettingsWindowController {
 
     private func showNew() {
         let style: NSWindow.StyleMask = [.titled, .closable, .resizable, .miniaturizable]
-        // 6.7.2: enlarged window, 560x540 to give content more breathing room
-        let contentSize = NSSize(width: 560, height: 540)
+        // 6.9 二次放大: 720x640 → 880x740。Appearance tab 的 themeGrid 在 880pt 宽下
+        // 6 张卡片(2 行 × 3 列)每张 ~260pt 更舒展;740pt 高度让所有 tab 完全不滚动,
+        // 大屏用户也有充足呼吸空间。可拖至 minSize 720x600。
+        let contentSize = NSSize(width: 880, height: 740)
         let win = NSWindow(
             contentRect: NSRect(x: 0, y: 0, width: contentSize.width, height: contentSize.height),
             styleMask: style,
@@ -56,8 +58,8 @@ final class SettingsWindowController {
         // Critical 3: become the key window to receive keyboard events
         win.isReleasedWhenClosed = false
         win.hidesOnDeactivate = false
-        // Only set the lower bound, not the upper bound
-        win.minSize = NSSize(width: 520, height: 420)
+        // 6.9: minSize 提高到 720x600 — 即使拖小,Appearance tab 也能一屏看完
+        win.minSize = NSSize(width: 720, height: 600)
         // SwiftUI content
         win.contentViewController = NSHostingController(rootView: SettingsRootView())
 

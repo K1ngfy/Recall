@@ -15,47 +15,49 @@ struct OnboardingView: View {
     @State private var showPermissionHint = false
 
     var body: some View {
-        if !completed {
-            VStack(spacing: 0) {
-                Spacer().frame(height: 24)
+        // 6.9 fix: 此前 `if !completed { ... }` 守卫导致完成后菜单栏点 Show Welcome
+        // 创建窗口但 body 返回 EmptyView → 窗口空白 / "没反应"。
+        // 显示时机由 OnboardingController 决定(showIfNeeded 守 completed;
+        // showForced 强制显示),view 本身始终渲染。
+        VStack(spacing: 0) {
+            Spacer().frame(height: 24)
 
-                heroIcon
-                    .padding(.bottom, 16)
+            heroIcon
+                .padding(.bottom, 16)
 
-                VStack(spacing: 6) {
-                    Text(Strings.Onboarding.welcomeTitle)
-                        .font(.system(size: 26, weight: .semibold))
-                        .foregroundStyle(.primary)
-                    Text(Strings.Onboarding.welcomeSubtitle)
-                        .font(.system(size: 13))
-                        .foregroundStyle(.secondary)
-                        .multilineTextAlignment(.center)
-                }
+            VStack(spacing: 6) {
+                Text(Strings.Onboarding.welcomeTitle)
+                    .font(.system(size: 26, weight: .semibold))
+                    .foregroundStyle(.primary)
+                Text(Strings.Onboarding.welcomeSubtitle)
+                    .font(.system(size: 13))
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+            }
+            .padding(.horizontal, 40)
+
+            featureList
+                .padding(.top, 22)
                 .padding(.horizontal, 40)
 
-                featureList
-                    .padding(.top, 22)
-                    .padding(.horizontal, 40)
+            permissionCard
+                .padding(.top, 18)
+                .padding(.horizontal, 40)
 
-                permissionCard
-                    .padding(.top, 18)
-                    .padding(.horizontal, 40)
+            Spacer()
 
-                Spacer()
-
-                bottomBar
-                    .padding(.horizontal, 40)
-                    .padding(.bottom, 22)
-            }
-            .frame(width: 560, height: 540)
-            .background(GlassPanelBackground(cornerRadius: 18))
-            .overlay(alignment: .bottom) {
-                if showPermissionHint && !permissions.axiOSTrusted {
-                    Text(Strings.HotkeyConflict.subtitle(Strings.Panel.manageSnippets))
-                        .font(.system(size: 11))
-                        .foregroundStyle(.secondary)
-                        .padding(.bottom, 4)
-                }
+            bottomBar
+                .padding(.horizontal, 40)
+                .padding(.bottom, 22)
+        }
+        .frame(width: 560, height: 540)
+        .background(GlassPanelBackground(cornerRadius: 18))
+        .overlay(alignment: .bottom) {
+            if showPermissionHint && !permissions.axiOSTrusted {
+                Text(Strings.HotkeyConflict.subtitle(Strings.Panel.manageSnippets))
+                    .font(.system(size: 11))
+                    .foregroundStyle(.secondary)
+                    .padding(.bottom, 4)
             }
         }
     }
@@ -96,7 +98,7 @@ struct OnboardingView: View {
 
     private var features: [FeatureItem] {
         [
-            FeatureItem(icon: "bolt.fill",          title: "Fast",    hint: "Opens in 220ms via ⌥⌘V"),
+            FeatureItem(icon: "bolt.fill",          title: "Fast",    hint: "Opens in 220ms via ⌥⌘C"),
             FeatureItem(icon: "eye.slash.fill",     title: "Private", hint: "All data stays on your Mac"),
             FeatureItem(icon: "sparkles",           title: "Smart",   hint: "Auto-paste into any text field"),
         ]
@@ -170,7 +172,9 @@ struct OnboardingView: View {
 
     private var bottomBar: some View {
         HStack(spacing: 12) {
-            Button(Strings.MenuBar.welcome) {
+            // 6.9 fix: 早先用了 Strings.MenuBar.welcome ("Show Welcome…") 语义错;
+            // 临时硬编码 "Close" 又把 zh-Hans 给破了。现在走专属 Strings.Onboarding.close。
+            Button(Strings.Onboarding.close) {
                 completed = true
                 DispatchQueue.main.async {
                     OnboardingController.shared.close()

@@ -26,8 +26,8 @@ struct RecallApp: App {
         }
         AppEnvironment.shared.pasteboardMonitor.start()
 
-        // 2) Register global hotkey (reads the custom value from UserDefaults, defaults to ⌥⌘V).
-        let keyCode = UserDefaults.standard.object(forKey: UserDefaultsKeys.Hotkey.keyCode) as? UInt32 ?? UInt32(kVK_ANSI_V)
+        // 2) Register global hotkey (reads the custom value from UserDefaults, defaults to ⌥⌘C).
+        let keyCode = UserDefaults.standard.object(forKey: UserDefaultsKeys.Hotkey.keyCode) as? UInt32 ?? UInt32(kVK_ANSI_C)
         let mods    = UserDefaults.standard.object(forKey: UserDefaultsKeys.Hotkey.modifiers) as? UInt32 ?? UInt32(cmdKey | optionKey)
         AppEnvironment.shared.hotkeyCenter.registerCustom(keyCode: keyCode, modifiers: mods) {
             AppEnvironment.shared.panelController.toggle()

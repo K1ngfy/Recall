@@ -50,6 +50,6 @@ enum RecallStoreSchema {
             let f = url.deletingPathExtension().appendingPathExtension("store\(ext)")
             try? FileManager.default.removeItem(at: f)
         }
-        AppLog.store.error("Deleted corrupted store at: \(url.path, privacy: .public)")
+        AppLog.store.error("Deleted corrupted store at: \(url.path)")
     }
 }

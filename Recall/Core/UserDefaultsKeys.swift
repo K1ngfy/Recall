@@ -32,4 +32,9 @@ enum UserDefaultsKeys {
         /// "en" / "zh-Hans" / "system".
         static let language = "app.language"
     }
+
+    enum Preview {
+        /// Bool, 6.9: 是否启用 Hover 预览弹窗。默认 true(向后兼容历史行为)。
+        static let hoverEnabled = "preview.hoverEnabled"
+    }
 }

@@ -11,10 +11,12 @@ struct SettingsRootView: View {
     @State private var language: AppLanguage = Self.loadLanguage()
     @State private var showLanguageRestartHint = false
     @State private var selectedTab: SettingsTab = .general
-    /// 6.8 Storage tab 的"一键清空"二次确认 alert
+    /// 6.9 Storage tab 的"一键清空"二次确认 alert
     @State private var showClearAllConfirm = false
-    /// 6.8 Storage tab 的"已清除 N 项"短暂 toast 文案,3 秒后清空
+    /// 6.9 Storage tab 的"已清除 N 项"短暂 toast 文案,3 秒后清空
     @State private var clearAllToast: String?
+    /// 6.9 Hover 预览开关:与 HoverPreviewModifier 共享同一个 @AppStorage key
+    @AppStorage(UserDefaultsKeys.Preview.hoverEnabled) private var hoverPreviewEnabled: Bool = true
 
     private enum SettingsTab: String, CaseIterable, Identifiable, Hashable {
         case general, appearance, storage, hotkey
@@ -159,6 +161,13 @@ struct SettingsRootView: View {
                     }
                     .padding(.vertical, 4)
                 }
+            }
+            // 6.9 Hover preview 行为开关
+            Section(Strings.Settings.hoverPreviewSection) {
+                Toggle(Strings.Settings.hoverPreviewToggle, isOn: $hoverPreviewEnabled)
+                Text(Strings.Settings.hoverPreviewDescription)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
             }
         }
         .formStyle(.grouped)
@@ -455,7 +464,7 @@ struct SettingsRootView: View {
                         .onChange(of: customModifiers) { _, _ in saveHotkey() }
 
                         Button(Strings.Settings.hotkeyReset) {
-                            customKeyCode = Int(kVK_ANSI_V)
+                            customKeyCode = Int(kVK_ANSI_C)
                             customModifiers = Int(cmdKey | optionKey)
                         }
                         .buttonStyle(.bordered)
@@ -471,7 +480,7 @@ struct SettingsRootView: View {
         .padding()
     }
 
-    @AppStorage(UserDefaultsKeys.Hotkey.keyCode) private var customKeyCode: Int = Int(kVK_ANSI_V)
+    @AppStorage(UserDefaultsKeys.Hotkey.keyCode) private var customKeyCode: Int = Int(kVK_ANSI_C)
     @AppStorage(UserDefaultsKeys.Hotkey.modifiers) private var customModifiers: Int = Int(cmdKey | optionKey)
 
     private func saveHotkey() {

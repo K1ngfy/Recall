@@ -9,7 +9,7 @@
 ## ✨ 核心特性
 
 - 📋 **全局监听** —— 后台静默监听 NSPasteboard，文本 / 链接 / 图片 / 文件 / 收藏自动分类
-- ⚡ **极速唤起** —— 默认 `⌥⌘V` 220ms 滑入面板，**可自定义快捷键**
+- ⚡ **极速唤起** —— 默认 `⌥⌘C` 220ms 滑入面板，**可自定义快捷键**
 - 🎯 **自动粘贴** —— 双击 / Enter 直接插入到任意输入框（AX + CGEvent ⌘V 降级链）
 - 📌 **钉住模式** —— 避免误点击外部自动关闭
 - ⭐ **收藏** —— 永久收藏重要条目（不被自动清理），独立入口查看
@@ -17,7 +17,7 @@
 - 📝 **Snippets 触发词** —— 把常用文本存为 snippet，输入 `/trigger ` 自动展开
 - 🧹 **批量操作** —— Cmd+Click 多选 → 批量复制 / 删除
 - 🎨 **极简主题** —— 8 种高亮色 + 强制明暗模式 + Liquid Glass 风格
-- 🔒 **本地优先 + 隐私加固** —— 所有数据存本地，零网络请求；store / 图片文件打 `NSFileProtection.complete` + 排除备份
+- 🔒 **本地优先 + 备份隔离** —— 所有数据存本地，零网络请求；store / 图片文件**排除 iCloud + Time Machine 备份**，避免敏感剪贴板内容外溢到备份磁盘
 - 🧽 **自动清理** —— Settings 里可设保留 7 天 / 30 天 / 无限期（收藏 / Snippet 永不被清）
 
 ## 🏗 架构
@@ -32,7 +32,7 @@ Recall/
 ├── Models/
 │   ├── ClipItem.swift               # @Model 实体（含 isFavorite / isSnippet / triggerWord）
 │   ├── ClipContentType.swift        # 分类枚举（text/image/link/file/snippet）
-│   └── ClipStorageLocation.swift    # 文件路径 + 排除备份 + FileProtection
+│   └── ClipStorageLocation.swift    # 文件路径 + 排除备份
 ├── Services/
 │   ├── PasteboardMonitor.swift      # 0.5s 轮询 + debounce
 │   ├── ClipItemBuilder.swift        # pasteboard → 分类（含文件扩展名白名单）
@@ -135,7 +135,8 @@ open /Users/$USER/Library/Developer/Xcode/DerivedData/Recall-*/Build/Products/De
 
 - ✅ **零网络请求**（Recall 本身不发任何 outbound request；打开链接走 `NSWorkspace.shared.open` 交给系统）
 - ✅ 数据存 `~/Library/Application Support/Recall/`，SwiftData + 外置图片
-- ✅ **存储加固**：每个 store / image 文件打 `NSFileProtection.complete`（锁屏后同用户进程不可读）+ 排除 iCloud / Time Machine 备份
+- ✅ **备份隔离**：每个 store / image 文件**排除 iCloud / Time Machine 备份**，敏感剪贴板内容不会被备份磁盘带走
+- ⚠️ **未做磁盘加密**：数据库与图片以明文存于本地。同一用户身份下运行的其他进程（包括恶意软件）可直接读取。如需更强保障，请使用 FileVault 全盘加密或考虑应用层加密扩展
 - ✅ 卸载 app = 全部数据删除（无云同步、无遥测）
 - ✅ 全局热键、click-outside 监听需要 macOS 权限授权
 

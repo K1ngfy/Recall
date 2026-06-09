@@ -15,6 +15,7 @@
 "onboarding.continue" = "开始使用";
 "onboarding.next" = "下一步";
 "onboarding.openSettings" = "打开设置";
+"onboarding.close" = "关闭";
 "onboarding.permissionBanner.title" = "自动粘贴需要辅助功能权限";
 "onboarding.permissionBanner.openSettings" = "打开设置";
 
@@ -78,6 +79,11 @@
 "settings.hotkey.reset" = "重置";
 "settings.hotkey.hint" = "点击录制新快捷键。ESC 取消。必须含修饰键";
 "settings.findInRecall" = "在 Recall 中查找";
+
+// 6.9 Hover preview toggle
+"settings.hoverPreview.section" = "悬停预览";
+"settings.hoverPreview.toggle" = "鼠标悬停时显示预览";
+"settings.hoverPreview.description" = "鼠标悬停任意条目 0.5 秒可弹出预览查看完整内容。浏览大量条目时关闭可减少干扰。";
 "settings.theme.accentRed" = "红";
 "settings.theme.accentBlue" = "蓝";
 
@@ -174,7 +180,7 @@
 "hover.snippet.uses" = "次使用";
 "hover.imageUnavailable" = "图片不可用";
 "hover.fileMoved" = "文件已不在原路径";
-"hover.fileOpenHint" = "双击打开";
+"hover.fileOpenHint" = "双击在 Finder 中显示";
 "hover.linkOpenHint" = "双击在浏览器中打开";
 
 // MARK: - Snippets window

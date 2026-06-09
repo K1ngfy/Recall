@@ -30,22 +30,22 @@ struct ClipCenterCard: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             header
-            Spacer(minLength: 8)
+            Spacer(minLength: 4)
             mainContent
-            Spacer(minLength: 6)
+            Spacer(minLength: 2)
             footer
         }
-        .padding(14)
-        .frame(maxWidth: .infinity, minHeight: 160, maxHeight: 180)
+        .padding(10)
+        .frame(maxWidth: .infinity, minHeight: 84, maxHeight: 104)
         .background(cardBackground)
         .overlay(cardBorder)
         .overlay(alignment: .topTrailing) {
             // 收藏项右上角 star 浮标(无论 hover 都显示)
             if item.isFavorite {
                 Image(systemName: "star.fill")
-                    .font(.system(size: 11))
+                    .font(.system(size: 10))
                     .foregroundStyle(Color.accentColor)
-                    .padding(8)
+                    .padding(6)
             }
         }
         .overlay(alignment: .center) {
@@ -60,18 +60,16 @@ struct ClipCenterCard: View {
         .onHover { isHovered = $0 }
         .hoverPreview(for: item)
         .contextMenu { contextMenuItems }
-        .gesture(
-            TapGesture(count: 1).onEnded {
-                if NSEvent.modifierFlags.contains(.command) {
-                    onToggleMulti()
-                } else {
-                    onSelect()
-                }
+        // 6.9 fix: .onTapGesture 替代 .gesture(TapGesture()),让内部 Button
+        // (leading icon 包的 click-preview 触发器)的 hit-test 自然胜出。
+        .onTapGesture(count: 1) {
+            if NSEvent.modifierFlags.contains(.command) {
+                onToggleMulti()
+            } else {
+                onSelect()
             }
-        )
-        .gesture(
-            TapGesture(count: 2).onEnded { onActivate() }
-        )
+        }
+        .onTapGesture(count: 2) { onActivate() }
     }
 
     // MARK: - Header
@@ -116,19 +114,26 @@ struct ClipCenterCard: View {
             imageContent
         default:
             // 通用"缩略图/图标 + 右文本"双栏
-            HStack(alignment: .top, spacing: 14) {
-                leadingThumb
-                VStack(alignment: .leading, spacing: 4) {
+            HStack(alignment: .top, spacing: 10) {
+                // 6.9 左侧 icon 点击 → 切换预览(独立于 Settings 的 hover 开关)
+                Button {
+                    PreviewCoordinator.shared.toggle(item)
+                } label: {
+                    leadingThumb
+                }
+                .buttonStyle(.plain)
+                .help("Show preview")
+                VStack(alignment: .leading, spacing: 2) {
                     Text(primaryText)
-                        .font(.system(size: 13, weight: .semibold))
+                        .font(.system(size: 12.5, weight: .semibold))
                         .foregroundStyle(.primary)
-                        .lineLimit(2)
+                        .lineLimit(1)
                         .multilineTextAlignment(.leading)
                     if let body = secondaryText {
                         Text(body)
                             .font(.system(size: 11))
                             .foregroundStyle(.secondary)
-                            .lineLimit(3)
+                            .lineLimit(1)
                             .truncationMode(.tail)
                             .multilineTextAlignment(.leading)
                             .fixedSize(horizontal: false, vertical: true)
@@ -141,26 +146,31 @@ struct ClipCenterCard: View {
 
     /// image:整张卡片以大缩略图为主体,标题压在缩略图下方
     private var imageContent: some View {
-        HStack(spacing: 14) {
-            ThumbnailView(data: item.thumbnailData, size: 96)
-                .frame(width: 96, height: 96)
-                .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
-            VStack(alignment: .leading, spacing: 4) {
+        HStack(spacing: 10) {
+            // 6.9 图片缩略图点击 → 切换预览
+            Button {
+                PreviewCoordinator.shared.toggle(item)
+            } label: {
+                ThumbnailView(data: item.thumbnailData, size: 56)
+                    .frame(width: 56, height: 56)
+                    .clipShape(RoundedRectangle(cornerRadius: 6, style: .continuous))
+            }
+            .buttonStyle(.plain)
+            .help("Show preview")
+            VStack(alignment: .leading, spacing: 2) {
                 Text(primaryText)
-                    .font(.system(size: 13, weight: .semibold))
-                    .lineLimit(2)
-                if let hash = item.contentHash.prefix(12).description as String? {
-                    Text(hash)
-                        .font(.system(size: 10, design: .monospaced))
-                        .foregroundStyle(.tertiary)
-                        .lineLimit(1)
-                }
+                    .font(.system(size: 12.5, weight: .semibold))
+                    .lineLimit(1)
+                Text(item.contentHash.prefix(12))
+                    .font(.system(size: 10, design: .monospaced))
+                    .foregroundStyle(.tertiary)
+                    .lineLimit(1)
             }
             .frame(maxWidth: .infinity, alignment: .topLeading)
         }
     }
 
-    /// 左侧 60pt 缩略图/图标块
+    /// 左侧 44pt 缩略图/图标块
     @ViewBuilder
     private var leadingThumb: some View {
         switch item.contentType {
@@ -169,8 +179,8 @@ struct ClipCenterCard: View {
         case .link:
             linkBadge
         case .file:
-            FileIconView(path: item.textContent ?? "", size: 48)
-                .frame(width: 60, height: 60)
+            FileIconView(path: item.textContent ?? "", size: 36)
+                .frame(width: 44, height: 44)
         case .snippet:
             iconBubble("text.book.closed", accent: true)
         case .image:
@@ -185,25 +195,25 @@ struct ClipCenterCard: View {
             .prefix(1)
             .uppercased()
         return ZStack {
-            RoundedRectangle(cornerRadius: 10, style: .continuous)
+            RoundedRectangle(cornerRadius: 8, style: .continuous)
                 .fill(Color.accentColor.opacity(0.18))
             Text(String(letter))
-                .font(.system(size: 24, weight: .semibold, design: .rounded))
+                .font(.system(size: 18, weight: .semibold, design: .rounded))
                 .foregroundStyle(Color.accentColor)
         }
-        .frame(width: 60, height: 60)
+        .frame(width: 44, height: 44)
     }
 
     @ViewBuilder
     private func iconBubble(_ symbol: String, accent: Bool) -> some View {
         ZStack {
-            RoundedRectangle(cornerRadius: 10, style: .continuous)
+            RoundedRectangle(cornerRadius: 8, style: .continuous)
                 .fill(accent ? Color.accentColor.opacity(0.18) : Color.primary.opacity(0.08))
             Image(systemName: symbol)
-                .font(.system(size: 22, weight: .regular))
+                .font(.system(size: 16, weight: .regular))
                 .foregroundStyle(accent ? Color.accentColor : .secondary)
         }
-        .frame(width: 60, height: 60)
+        .frame(width: 44, height: 44)
     }
 
     // MARK: - Footer

@@ -20,6 +20,15 @@ final class PreviewCoordinator {
         activeItemID = item.id
     }
 
+    /// 6.9 显式点击触发:同一项二次点击关闭(toggle 直觉),不同项点击切换到新项
+    func toggle(_ item: ClipItemViewData) {
+        if activeItemID == item.id {
+            deactivateAll()
+        } else {
+            activeItemID = item.id
+        }
+    }
+
     /// Called when the row's hover ends: only close if the popover is also not hovered.
     func deactivateIfNoHover(_ item: ClipItemViewData) {
         if activeItemID == item.id && !popoverHovered {
@@ -36,37 +45,53 @@ final class PreviewCoordinator {
 // MARK: - Modifier
 
 /// Hover preview popover.
-/// Close rule: after row onHover(false), wait 0.2s and check;
-/// only close if the popover itself also has onHover(false).
+///
+/// 6.9 设计:
+/// - **popover binding 始终挂**——这样点击左侧 icon 的显式触发能正常显示
+/// - **`.onHover` 由 Settings 开关控制**——用户关闭 hover 自动预览时,
+///   只是不再自动响应鼠标悬停,显式点击仍可弹出
+/// 关闭逻辑:row onHover(false) → 等 0.2s → 若 popover 也未 hover,则关
 struct HoverPreviewModifier: ViewModifier {
     let item: ClipItemViewData
     @State private var workItem: DispatchWorkItem?
     @Bindable private var coordinator = PreviewCoordinator.shared
+    @AppStorage(UserDefaultsKeys.Preview.hoverEnabled) private var hoverEnabled: Bool = true
 
     func body(content: Content) -> some View {
-        content
-            .onHover { hovering in
-                handleHover(hovering)
-            }
-            .popover(isPresented: Binding(
-                get: { coordinator.shouldShow(for: item) },
-                set: { newValue in
-                    if !newValue { coordinator.deactivateAll() }
+        Group {
+            if hoverEnabled {
+                content.onHover { hovering in
+                    handleHover(hovering)
                 }
-            ), arrowEdge: arrowEdge) {
-                HoverPreviewContent(item: item)
-                    .onHover { hovering in
-                        coordinator.popoverHovered = hovering
-                        if !hovering {
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
-                                if !coordinator.popoverHovered {
-                                    coordinator.deactivateAll()
-                                }
+            } else {
+                content
+            }
+        }
+        .popover(isPresented: Binding(
+            get: { coordinator.shouldShow(for: item) },
+            set: { newValue in
+                // 6.9 race fix:仅当 activeItemID 仍 == 当前 item.id 时才 deactivate。
+                // 否则当用户从 A 切到 B(toggle 直接设 activeItemID=B.id),
+                // SwiftUI 调 A.setter(false) 准备关闭 A 的 popover,
+                // 若无脑 deactivateAll 会把刚设的 B.id 也清掉,B 永远开不出来。
+                if !newValue && coordinator.activeItemID == item.id {
+                    coordinator.deactivateAll()
+                }
+            }
+        ), arrowEdge: arrowEdge) {
+            HoverPreviewContent(item: item)
+                .onHover { hovering in
+                    coordinator.popoverHovered = hovering
+                    if !hovering {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
+                            if !coordinator.popoverHovered {
+                                coordinator.deactivateAll()
                             }
                         }
                     }
-                    .interactiveDismissDisabled(true)
-            }
+                }
+                .interactiveDismissDisabled(true)
+        }
     }
 
     private var arrowEdge: Edge {

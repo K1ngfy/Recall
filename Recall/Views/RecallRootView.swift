@@ -283,6 +283,10 @@ struct RecallRootView: View {
             .padding(.top, 16)
             .padding(.bottom, 24)
         }
+        // 6.9 fix: SwiftUI 横向 ScrollView 在 macOS 26 上会渲染**纵向**滚动条
+        // 在右下角(即使内容 height 适配 frame),首次打开尤为明显。
+        // 显式隐藏 vertical axis 的 indicator,只保留底部横向 indicator。
+        .scrollIndicators(.hidden, axes: .vertical)
         .frame(maxHeight: .infinity)
         .frame(height: nil)
     }
@@ -393,7 +397,10 @@ struct RecallRootView: View {
                 return .noCategory(t)
             }
         }()
-        return EmptyStateView(kind: kind)
+        // 6.9 horizontal (top/bottom) 和 center dock 面板较矮,用 compact 布局
+        // 防止默认 140pt illustration 把窄内容区撑变形。left/right 侧栏高度足够,
+        // 维持原始紧凑视觉。
+        return EmptyStateView(kind: kind, compact: isHorizontal || dockPosition == .center)
     }
 
     private var filterCategory: ClipContentType? {

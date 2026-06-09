@@ -43,3 +43,6 @@ Recall.xcodeproj/
 .claude/
 CLAUDE.md
 CODE_MAP.md
+
+# Release build artifacts
+build/

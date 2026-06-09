@@ -21,11 +21,16 @@ struct ClipCard: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             // Top label strip
-            HStack(spacing: 4) {
+            // 6.9 fix: 160pt 卡片宽塞不下 7 个元素,之前 typeLabel "Text" 被压成 Te/xt,
+            // timestamp "7m ago" 压成 7m/ag/o。优化:
+            // 1) 删 typeLabel(icon 已表达类别)
+            // 2) timestamp 加 fixedSize + lineLimit(1) 防竖排
+            // 3) copyButton 仅 hover/selected 时显示,空闲态留出宽度
+            HStack(spacing: 3) {
                 // Multi-select checkbox: always visible when selected, hover-only otherwise.
                 // Use Image + onTapGesture instead of Button to avoid clashing with the outer TapGesture.
                 Image(systemName: isMultiSelected ? "checkmark.circle.fill" : "circle")
-                    .font(.system(size: 12, weight: isMultiSelected ? .semibold : .regular))
+                    .font(.system(size: 11, weight: isMultiSelected ? .semibold : .regular))
                     .foregroundStyle(isMultiSelected ? Color.accentColor : .secondary)
                     .opacity(isMultiSelected || isHovered ? 1 : 0)
                     .contentShape(Rectangle())
@@ -34,13 +39,16 @@ struct ClipCard: View {
                 Image(systemName: typeIcon)
                     .font(.system(size: 9, weight: .medium))
                     .foregroundStyle(isSelected || isMultiSelected ? Color.accentColor : .secondary)
-                Text(typeLabel)
-                    .font(.system(size: 9, weight: .medium))
-                    .foregroundStyle(isSelected || isMultiSelected ? Color.accentColor : .secondary)
-                Spacer()
+                Spacer(minLength: 4)
                 Text(relativeTimeString(from: item.createdAt))
                     .font(.system(size: 9))
                     .foregroundStyle(.tertiary)
+                    .lineLimit(1)
+                    // 6.9 fix: 之前用 .fixedSize 防"7m/ag/o"竖排,但 fixedSize 会
+                    // 在 hover 全按钮显示时把 spacer 压成负值,挤出右侧按钮。
+                    // 改用 layoutPriority(1):优先让 timestamp 拿到所需宽度,
+                    // 不够时仍能 truncate(…) —— 既不会竖排,也不会撑爆 HStack。
+                    .layoutPriority(1)
                 if item.contentType == .text || item.contentType == .snippet {
                     snippetButton
                 }
@@ -104,28 +112,23 @@ struct ClipCard: View {
                 }
             }
         }
-        .gesture(
-            // Cmd+Click goes to the multi-select branch; regular Click goes to single-select.
-            // Use NSEvent.modifierFlags to distinguish and avoid the "deselect" issue
-            // of .simultaneousGesture.
-            TapGesture(count: 1).onEnded {
-                if NSEvent.modifierFlags.contains(.command) {
-                    onToggleMulti()
-                } else {
-                    onSelect()
-                }
+        // 6.9 fix: .onTapGesture 替代 .gesture(TapGesture()),让任何内部 Button
+        // (未来加 click-preview 时)能自然抢到 hit-test。
+        .onTapGesture(count: 1) {
+            if NSEvent.modifierFlags.contains(.command) {
+                onToggleMulti()
+            } else {
+                onSelect()
             }
-        )
-        .gesture(
-            TapGesture(count: 2).onEnded { onActivate() }
-        )
+        }
+        .onTapGesture(count: 2) { onActivate() }
     }
 
     private var copyButton: some View {
         HoverIconButton(
             systemName: "square.on.square",
             isActive: isSelected,
-            isVisible: true,
+            isVisible: isHovered || isSelected,
             size: 18,
             activeTint: .accentColor,
             help: "Copy to clipboard"
@@ -307,7 +310,7 @@ struct ClipCard: View {
                 HStack(spacing: 4) {
                     Image(systemName: "arrow.up.forward.app")
                         .font(.system(size: 9))
-                    Text("Double-click to open")
+                    Text("Double-click to reveal in Finder")
                         .font(.system(size: 9))
                 }
                 .foregroundStyle(.tertiary)

@@ -15,6 +15,7 @@
 "onboarding.continue" = "Get Started";
 "onboarding.next" = "Next";
 "onboarding.openSettings" = "Open Settings";
+"onboarding.close" = "Close";
 "onboarding.permissionBanner.title" = "Auto-paste needs Accessibility";
 "onboarding.permissionBanner.openSettings" = "Open Settings";
 
@@ -78,6 +79,11 @@
 "settings.hotkey.reset" = "Reset";
 "settings.hotkey.hint" = "Click the key combo to record a new shortcut. ESC to cancel. A modifier key is required.";
 "settings.findInRecall" = "Find in Recall";
+
+// 6.9 Hover preview toggle
+"settings.hoverPreview.section" = "Hover Preview";
+"settings.hoverPreview.toggle" = "Show preview on hover";
+"settings.hoverPreview.description" = "Hover any clip for 0.5s to peek the full content. Disable to keep the panel quieter when scanning many rows.";
 "settings.theme.accentRed" = "Red";
 "settings.theme.accentBlue" = "Blue";
 
@@ -174,7 +180,7 @@
 "hover.snippet.uses" = "uses";
 "hover.imageUnavailable" = "Image unavailable";
 "hover.fileMoved" = "File no longer at this path";
-"hover.fileOpenHint" = "Double-click to open";
+"hover.fileOpenHint" = "Double-click to reveal in Finder";
 "hover.linkOpenHint" = "Double-click to open in browser";
 
 // MARK: - Snippets window

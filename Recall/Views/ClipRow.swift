@@ -85,21 +85,20 @@ struct ClipRow: View {
                     .transition(.opacity.combined(with: .scale(scale: 0.85)))
             }
         }
-        .gesture(
-            TapGesture(count: 1).onEnded {
-                // Cmd+Click goes to the multi-select branch; regular Click goes to the single-select branch.
-                // Use NSEvent.modifierFlags to distinguish (the macOS SwiftUI .modifiers(.command)
-                // fires together with the single click, so it feels like "deselect").
-                if NSEvent.modifierFlags.contains(.command) {
-                    onToggleMulti()
-                } else {
-                    onSelect()
-                }
+        // 6.9 fix: 用 .onTapGesture 而非 .gesture(TapGesture()),后者会
+        // 抢断内部 Button(leading icon 包的 click-preview 触发器)的 hit-test,
+        // 导致点图标 toggle preview 不工作。.onTapGesture 让 Button 子层自然胜出。
+        .onTapGesture(count: 1) {
+            // Cmd+Click goes to the multi-select branch; regular Click goes to the single-select branch.
+            // Use NSEvent.modifierFlags to distinguish (the macOS SwiftUI .modifiers(.command)
+            // fires together with the single click, so it feels like "deselect").
+            if NSEvent.modifierFlags.contains(.command) {
+                onToggleMulti()
+            } else {
+                onSelect()
             }
-        )
-        .gesture(
-            TapGesture(count: 2).onEnded { onActivate() }
-        )
+        }
+        .onTapGesture(count: 2) { onActivate() }
     }
 
     @ViewBuilder
@@ -198,6 +197,18 @@ struct ClipRow: View {
 
     @ViewBuilder
     private var leading: some View {
+        // 6.9 左侧图标点击 → 切换 hover 预览(独立于 Settings 的 hover 自动开关)
+        Button {
+            PreviewCoordinator.shared.toggle(item)
+        } label: {
+            leadingIcon
+        }
+        .buttonStyle(.plain)
+        .help("Show preview")
+    }
+
+    @ViewBuilder
+    private var leadingIcon: some View {
         switch item.contentType {
         case .image:
             ThumbnailView(data: item.thumbnailData, size: 36)
