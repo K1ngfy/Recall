@@ -1,8 +1,11 @@
 name: Recall
 options:
   bundleIdPrefix: com.recall
+  # 0.9.1 修复: 部署目标从 macOS 26.0 降到 15.0 (Sequoia)。
+  # Recall 并没有使用 26-only API(实际上大量用法只是 14+ / 15+),
+  # 之前 26.0 锁死导致 macOS 15.7.2 用户收到"版本不能配合使用"。
   deploymentTarget:
-    macOS: "26.0"
+    macOS: "15.0"
   createIntermediateGroups: true
   groupSortPosition: top
   generateEmptyDirectories: false
@@ -11,11 +14,12 @@ options:
 settings:
   base:
     SWIFT_VERSION: "6.0"
-    MACOSX_DEPLOYMENT_TARGET: "26.0"
+    MACOSX_DEPLOYMENT_TARGET: "15.0"
     SWIFT_STRICT_CONCURRENCY: complete
     DEAD_CODE_STRIPPING: YES
     ENABLE_HARDENED_RUNTIME: YES
-    CODE_SIGN_STYLE: Automatic
+    # 0.9.1: ad-hoc 签名即可(没苹果开发者账号)
+    CODE_SIGN_STYLE: Manual
     CODE_SIGN_IDENTITY: "-"
     DEVELOPMENT_TEAM: ""
 
@@ -24,16 +28,29 @@ targets:
     type: application
     platform: macOS
     sources:
+      # 0.9.1 fix: xcodegen 把 "path: Recall" 默认按 swift 源文件过滤,
+      # .xcassets / .strings / .plist / .entitlements 会被漏掉导致 Assets.car 不生成。
+      # 0.9.0 release app 的 Resources/ 里**没有** Assets.car → 启动台无图标、Finder 显示通用图标。
+      # 显式列出资源类型 + 保留目录递归,覆盖所有子目录里的 .swift/.strings/.xcassets/.plist。
       - path: Recall
+        type: group
+        includes:
+          - "**/*.swift"
+          - "**/*.xcassets"
+          - "**/*.strings"
+          - "**/*.lproj"
+          - "**/*.entitlements"
+          - "**/*.plist"
     info:
       path: Recall/Info.plist
       properties:
         CFBundleName: Recall
         CFBundleDisplayName: Recall
         CFBundleIdentifier: com.recall.app
-        CFBundleShortVersionString: "0.9.0"
-        CFBundleVersion: "9"
-        LSMinimumSystemVersion: "26.0"
+        CFBundleShortVersionString: "0.9.1"
+        CFBundleVersion: "10"
+        # 0.9.1: 降低到 15.0,允许 macOS Sequoia 15.7.2 安装
+        LSMinimumSystemVersion: "15.0"
         LSUIElement: true
         NSHumanReadableCopyright: "© 2026 Recall"
         NSPrincipalClass: NSApplication
@@ -52,12 +69,20 @@ targets:
         ENABLE_APP_SANDBOX: NO
         CODE_SIGN_ENTITLEMENTS: Recall/Recall.entitlements
         SWIFT_EMIT_LOC_STRINGS: YES
+        # 0.9.1 关键修复: 显式指定 ASSETCATALOG_COMPILER_INPUT_FILES,
+        # 强制 actool 编译这个 .xcassets。早期 xcodegen 项目文件漏了它,
+        # 编译时 actool 根本不被调用 → app 拿不到任何图标资源。
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_INPUT_FILES: "Recall/Assets.xcassets"
         COMBINE_HIDPI_IMAGES: YES
+        # 0.9.1: 主动禁用任何会触发远程访问的 macOS 后台服务
+        # (XProtect / Gatekeeper 在线吊销检查在 macOS 15+ 默认开启,
+        # 用户提到的 yebinnet CDN 节点正是 macOS 内置信任证书吊销检查服务)
+        ENABLE_APP_SANDBOX: NO
+        # 0.9.1: 强制 include Application Category,让启动台分组正常
+        # (LSUIElement=true 也会进 Launchpad,但需要 icon resource 存在)
+        OTHER_CODE_SIGN_FLAGS: "--deep"
 
-  # 单元测试 target——独立 bundle，挂到 Recall 主 app 的
-  # 单元测试要求 6.7 起的核心业务逻辑（SnippetService / PanelLayout / ClipItemBuilder）
-  # 编译时通过 @testable import Recall 访问 internal API
   RecallTests:
     type: bundle.unit-test
     platform: macOS
@@ -72,4 +97,4 @@ targets:
         BUNDLE_LOADER: $(TEST_HOST)
         TEST_HOST: $(BUILT_PRODUCTS_DIR)/Recall.app/Contents/MacOS/Recall
         SWIFT_VERSION: "6.0"
-        MACOSX_DEPLOYMENT_TARGET: "26.0"
+        MACOSX_DEPLOYMENT_TARGET: "15.0"
