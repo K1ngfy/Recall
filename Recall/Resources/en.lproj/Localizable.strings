@@ -1,0 +1,190 @@
+/* Recall 本地化字符串 — English
+ * 通过 `Strings.xxx` 集中访问；SwiftUI 视图禁止再写硬编码用户可见文本。
+ * 添加新条目：同时更新 en/zh-Hans 两侧。
+ */
+
+// MARK: - App / Onboarding
+"app.name" = "Recall";
+"onboarding.welcome.title" = "Welcome to Recall";
+"onboarding.welcome.subtitle" = "Your clipboard history, always one keystroke away.";
+"onboarding.welcome.body" = "Double-click an item to insert it at your cursor. No more ⌘C ⌘V dance.";
+"onboarding.autopaste.title" = "Auto-paste, anywhere";
+"onboarding.autopaste.body" = "Grant Recall access in System Settings → Privacy & Security → Accessibility to enable auto-paste.";
+"onboarding.customize.title" = "Make it yours";
+"onboarding.customize.body" = "Press ⌘, to open Settings later. Customize hotkey, accent color, dock position, and more.";
+"onboarding.continue" = "Get Started";
+"onboarding.next" = "Next";
+"onboarding.openSettings" = "Open Settings";
+"onboarding.permissionBanner.title" = "Auto-paste needs Accessibility";
+"onboarding.permissionBanner.openSettings" = "Open Settings";
+
+// MARK: - Menu Bar
+"menubar.show" = "Show Recall";
+"menubar.welcome" = "Show Welcome…";
+"menubar.settings" = "Settings…";
+"menubar.quit" = "Quit Recall";
+
+// MARK: - Settings
+"settings.tab.general" = "General";
+"settings.tab.appearance" = "Appearance";
+"settings.tab.storage" = "Storage";
+"settings.tab.hotkey" = "Hotkey";
+"settings.dockPosition" = "Dock Position";
+"settings.dockPosition.left" = "Left";
+"settings.dockPosition.right" = "Right";
+"settings.dockPosition.top" = "Top";
+"settings.dockPosition.bottom" = "Bottom";
+"settings.dockPosition.center" = "Center";
+"settings.language" = "Language";
+"settings.language.row" = "App language";
+"settings.language.restartHint" = "Restart Recall to apply the new language.";
+"settings.language.restartNow" = "Restart Now";
+"settings.accentColor" = "Accent Color";
+"settings.accentColor.color" = "Color";
+"settings.theme" = "Panel Theme";
+"settings.theme.system" = "System";
+"settings.theme.aurora" = "Aurora";
+"settings.theme.sunset" = "Sunset";
+"settings.theme.ocean" = "Ocean";
+"settings.theme.forest" = "Forest";
+"settings.theme.graphite" = "Graphite";
+"settings.theme.custom" = "Custom";
+"settings.customAccent" = "Accent color";
+"settings.customBackground" = "Background color";
+"settings.appearance" = "Appearance";
+"settings.appearance.mode" = "Mode";
+"settings.appearance.followSystem" = "Follow System";
+"settings.appearance.light" = "Light";
+"settings.appearance.dark" = "Dark";
+"settings.appearance.preview" = "Preview";
+"settings.appearance.preview.triggerWord" = "trigger word";
+"settings.appearance.preview.selectedTab" = "selected tab";
+"settings.appearance.preview.primaryAction" = "primary action";
+"settings.retention" = "Retention";
+"settings.retention.description" = "Items older than the selected duration are automatically cleaned up on app launch and every hour.";
+
+// Reset / Clear All (6.8)
+"settings.reset.section" = "Reset";
+"settings.clearAllData" = "Clear All Data";
+"settings.clearAllData.description" = "Permanently remove all clipboard history, favorites, snippets, and images stored by Recall.";
+"settings.clearAllData.confirm.title" = "Clear all Recall data?";
+"settings.clearAllData.confirm.message" = "This will permanently remove all clipboard history, favorites, snippets, and stored images. This action cannot be undone.";
+"settings.clearAllData.confirm.action" = "Clear All Data";
+"settings.clearAllData.cancel" = "Cancel";
+"settings.clearAllData.toast" = "Cleared %lld items";
+"settings.hotkey.title" = "Global Hotkey";
+"settings.hotkey.showHide" = "Show/Hide Recall";
+"settings.hotkey.recorderPlaceholder" = "Press any key combo…";
+"settings.hotkey.reset" = "Reset";
+"settings.hotkey.hint" = "Click the key combo to record a new shortcut. ESC to cancel. A modifier key is required.";
+"settings.findInRecall" = "Find in Recall";
+"settings.theme.accentRed" = "Red";
+"settings.theme.accentBlue" = "Blue";
+
+// MARK: - Panel / Header
+"panel.pin" = "Pin";
+"panel.unpin" = "Unpin (panel will close on outside click)";
+"panel.pinned" = "Pin panel open";
+"panel.unpinned" = "Unpin (panel will close on outside click)";
+"panel.manageSnippets" = "Manage Snippets";
+"panel.settings" = "Settings";
+"panel.searchPlaceholder" = "Search clipboard";
+"panel.editSnippet" = "Edit Snippet";
+"panel.makeSnippet" = "Make this into a Snippet";
+"panel.copy" = "Copy to clipboard";
+
+// MARK: - Tabs / Filter
+"tab.all" = "All";
+"tab.text" = "Text";
+"tab.images" = "Images";
+"tab.links" = "Links";
+"tab.files" = "Files";
+"tab.snippets" = "Snippets";
+"tab.favorites" = "Favorites";
+"date.anytime" = "Anytime";
+"date.today" = "Today";
+"date.pastWeek" = "Past week";
+"date.pastMonth" = "Past month";
+"multiSelect.count" = "%lld selected";
+
+// MARK: - Empty states
+"empty.noHistory.title" = "No clipboard history yet";
+"empty.noHistory.subtitle" = "Copy text, links, or images anywhere to start building your history";
+"empty.noText.title" = "No text copied yet";
+"empty.noText.subtitle" = "Copy some text to see it appear here";
+"empty.noImages.title" = "No images copied yet";
+"empty.noImages.subtitle" = "Copy an image from any app to see it appear here";
+"empty.noLinks.title" = "No links copied yet";
+"empty.noLinks.subtitle" = "Copy a URL to see it appear here";
+"empty.noFiles.title" = "No files copied yet";
+"empty.noFiles.subtitle" = "Copy a file from Finder to see it appear here";
+"empty.noSnippets.title" = "No snippets yet";
+"empty.noSnippets.subtitle" = "Click the ⚡ on a text row in All to create a snippet";
+"empty.noFavorites.title" = "No favorites yet";
+"empty.noFavorites.subtitle" = "Click the ☆ on any item to keep it forever";
+"empty.noSearchResults.title" = "No matches found";
+"empty.noSearchResults.subtitle" = "Try a different search keyword or clear the search field";
+
+// MARK: - Snippet sheet
+"sheet.snippet.create" = "Create Snippet";
+"sheet.snippet.edit" = "Edit Snippet";
+"sheet.snippet.triggerWord" = "Trigger word";
+"sheet.snippet.triggerWordPlaceholder" = "tt";
+"sheet.snippet.triggerHint" = "Type this word + space in any app to expand the snippet.";
+"sheet.snippet.contentPreview" = "Content preview";
+"sheet.snippet.cancel" = "Cancel";
+"sheet.snippet.createAction" = "Create";
+"sheet.snippet.save" = "Save";
+"sheet.snippet.remove" = "Remove Snippet";
+
+// MARK: - Favorite sheet (6.8)
+"sheet.favorite.create" = "Add to Favorites";
+"sheet.favorite.edit" = "Edit Favorite";
+"sheet.favorite.title" = "Title";
+"sheet.favorite.titlePlaceholder" = "Optional — defaults to the clip itself";
+"sheet.favorite.category" = "Category";
+"sheet.favorite.categoryPlaceholder" = "Type a category name (or pick from below)";
+"sheet.favorite.categoryHint" = "Categories you create will appear here next time.";
+"sheet.favorite.categoryPickHelp" = "Pick from existing categories";
+"sheet.favorite.contentPreview" = "Content";
+"sheet.favorite.cancel" = "Cancel";
+"sheet.favorite.save" = "Add Favorite";
+"sheet.favorite.update" = "Save";
+"sheet.favorite.remove" = "Remove from Favorites";
+
+// MARK: - Favorite chips (6.8)
+"favoriteChips.all" = "All";
+"favoriteChips.uncategorized" = "Uncategorized";
+
+// MARK: - Context menu / actions
+"context.copy" = "Copy";
+"context.addFavorite" = "Add to Favorites";
+"context.removeFavorite" = "Remove from Favorites";
+"context.makeSnippet" = "Make Snippet…";
+"context.editSnippet" = "Edit Snippet…";
+"context.removeSnippet" = "Remove Snippet";
+
+// MARK: - Hotkey conflict toast
+"hotkeyConflict.title" = "Hotkey conflict";
+"hotkeyConflict.subtitle" = "⌘%@ is already taken by another app";
+"hotkeyConflict.change" = "Change…";
+
+// MARK: - Hover preview
+"hover.link.openInBrowser" = "Open in Browser";
+"hover.snippet.uses" = "uses";
+"hover.imageUnavailable" = "Image unavailable";
+"hover.fileMoved" = "File no longer at this path";
+"hover.fileOpenHint" = "Double-click to open";
+"hover.linkOpenHint" = "Double-click to open in browser";
+
+// MARK: - Snippets window
+"snippets.title" = "Snippets";
+"snippets.searchPlaceholder" = "Search snippets";
+"snippets.usedTimes" = "Used %lld times";
+"snippets.triggerHint" = "/%@";
+
+// MARK: - Toasts
+"toast.copied" = "Copied";
+
+// MARK: - Errors
+"error.title" = "Error";

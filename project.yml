@@ -1,0 +1,75 @@
+name: Recall
+options:
+  bundleIdPrefix: com.recall
+  deploymentTarget:
+    macOS: "26.0"
+  createIntermediateGroups: true
+  groupSortPosition: top
+  generateEmptyDirectories: false
+  developmentLanguage: en
+
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    MACOSX_DEPLOYMENT_TARGET: "26.0"
+    SWIFT_STRICT_CONCURRENCY: complete
+    DEAD_CODE_STRIPPING: YES
+    ENABLE_HARDENED_RUNTIME: YES
+    CODE_SIGN_STYLE: Automatic
+    CODE_SIGN_IDENTITY: "-"
+    DEVELOPMENT_TEAM: ""
+
+targets:
+  Recall:
+    type: application
+    platform: macOS
+    sources:
+      - path: Recall
+    info:
+      path: Recall/Info.plist
+      properties:
+        CFBundleName: Recall
+        CFBundleDisplayName: Recall
+        CFBundleIdentifier: com.recall.app
+        CFBundleShortVersionString: "0.1.0"
+        CFBundleVersion: "1"
+        LSMinimumSystemVersion: "26.0"
+        LSUIElement: true
+        NSHumanReadableCopyright: "© 2026 Recall"
+        NSPrincipalClass: NSApplication
+        NSMainStoryboardFile: ""
+        NSSupportsAutomaticTermination: false
+        NSSupportsSuddenTermination: false
+    entitlements:
+      path: Recall/Recall.entitlements
+      properties:
+        com.apple.security.app-sandbox: false
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.recall.app
+        GENERATE_INFOPLIST_FILE: NO
+        INFOPLIST_FILE: Recall/Info.plist
+        ENABLE_APP_SANDBOX: NO
+        CODE_SIGN_ENTITLEMENTS: Recall/Recall.entitlements
+        SWIFT_EMIT_LOC_STRINGS: YES
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        COMBINE_HIDPI_IMAGES: YES
+
+  # 单元测试 target——独立 bundle，挂到 Recall 主 app 的
+  # 单元测试要求 6.7 起的核心业务逻辑（SnippetService / PanelLayout / ClipItemBuilder）
+  # 编译时通过 @testable import Recall 访问 internal API
+  RecallTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - path: RecallTests
+    dependencies:
+      - target: Recall
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.recall.app.tests
+        GENERATE_INFOPLIST_FILE: YES
+        BUNDLE_LOADER: $(TEST_HOST)
+        TEST_HOST: $(BUILT_PRODUCTS_DIR)/Recall.app/Contents/MacOS/Recall
+        SWIFT_VERSION: "6.0"
+        MACOSX_DEPLOYMENT_TARGET: "26.0"

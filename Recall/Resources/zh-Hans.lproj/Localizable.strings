@@ -1,0 +1,190 @@
+/* Recall 本地化字符串 — 简体中文
+ * 通过 `Strings.xxx` 集中访问；SwiftUI 视图禁止再写硬编码用户可见文本。
+ */
+
+"app.name" = "Recall";
+
+// MARK: - App / Onboarding
+"onboarding.welcome.title" = "欢迎使用 Recall";
+"onboarding.welcome.subtitle" = "你的剪贴板历史，一个快捷键即达";
+"onboarding.welcome.body" = "双击条目即可直接插入到光标处，告别 ⌘C ⌘V 之舞";
+"onboarding.autopaste.title" = "全局自动粘贴";
+"onboarding.autopaste.body" = "在「系统设置 → 隐私与安全 → 辅助功能」中授权 Recall 以启用自动粘贴";
+"onboarding.customize.title" = "个性化";
+"onboarding.customize.body" = "按 ⌘, 打开设置。可自定义快捷键、高亮色、停靠位置等";
+"onboarding.continue" = "开始使用";
+"onboarding.next" = "下一步";
+"onboarding.openSettings" = "打开设置";
+"onboarding.permissionBanner.title" = "自动粘贴需要辅助功能权限";
+"onboarding.permissionBanner.openSettings" = "打开设置";
+
+// MARK: - Menu Bar
+"menubar.show" = "显示 Recall";
+"menubar.welcome" = "显示欢迎页…";
+"menubar.settings" = "设置…";
+"menubar.quit" = "退出 Recall";
+
+// MARK: - Settings
+"settings.tab.general" = "通用";
+"settings.tab.appearance" = "外观";
+"settings.tab.storage" = "存储";
+"settings.tab.hotkey" = "快捷键";
+"settings.dockPosition" = "停靠位置";
+"settings.dockPosition.left" = "左侧";
+"settings.dockPosition.right" = "右侧";
+"settings.dockPosition.top" = "顶部";
+"settings.dockPosition.bottom" = "底部";
+"settings.dockPosition.center" = "居中";
+"settings.language" = "语言";
+"settings.language.row" = "应用语言";
+"settings.language.restartHint" = "重启 Recall 以应用新语言。";
+"settings.language.restartNow" = "立即重启";
+"settings.accentColor" = "高亮色";
+"settings.accentColor.color" = "颜色";
+"settings.theme" = "面板主题";
+"settings.theme.system" = "跟随系统";
+"settings.theme.aurora" = "极光";
+"settings.theme.sunset" = "日落";
+"settings.theme.ocean" = "海洋";
+"settings.theme.forest" = "森林";
+"settings.theme.graphite" = "石墨";
+"settings.theme.custom" = "自定义";
+"settings.customAccent" = "高亮色";
+"settings.customBackground" = "背景色";
+"settings.appearance" = "外观";
+"settings.appearance.mode" = "模式";
+"settings.appearance.followSystem" = "跟随系统";
+"settings.appearance.light" = "浅色";
+"settings.appearance.dark" = "深色";
+"settings.appearance.preview" = "预览";
+"settings.appearance.preview.triggerWord" = "触发词";
+"settings.appearance.preview.selectedTab" = "选中态";
+"settings.appearance.preview.primaryAction" = "主按钮";
+"settings.retention" = "保留时长";
+"settings.retention.description" = "超过所选时长的条目会在每次启动和每小时被自动清理";
+
+// Reset / Clear All (6.8)
+"settings.reset.section" = "重置";
+"settings.clearAllData" = "清除全部数据";
+"settings.clearAllData.description" = "永久删除 Recall 存储的所有剪贴板历史、收藏、Snippets 和图片文件";
+"settings.clearAllData.confirm.title" = "确定清除全部数据？";
+"settings.clearAllData.confirm.message" = "此操作会永久删除所有剪贴板历史、收藏、Snippets 与图片文件,且无法撤销。";
+"settings.clearAllData.confirm.action" = "清除全部数据";
+"settings.clearAllData.cancel" = "取消";
+"settings.clearAllData.toast" = "已清除 %lld 项";
+"settings.hotkey.title" = "全局快捷键";
+"settings.hotkey.showHide" = "显示 / 隐藏 Recall";
+"settings.hotkey.recorderPlaceholder" = "按下任意组合键…";
+"settings.hotkey.reset" = "重置";
+"settings.hotkey.hint" = "点击录制新快捷键。ESC 取消。必须含修饰键";
+"settings.findInRecall" = "在 Recall 中查找";
+"settings.theme.accentRed" = "红";
+"settings.theme.accentBlue" = "蓝";
+
+// MARK: - Panel / Header
+"panel.pin" = "钉住";
+"panel.unpin" = "取消钉住（点击面板外部会关闭）";
+"panel.pinned" = "钉住面板保持打开";
+"panel.unpinned" = "取消钉住（点击面板外部会关闭）";
+"panel.manageSnippets" = "管理 Snippets";
+"panel.settings" = "设置";
+"panel.searchPlaceholder" = "搜索剪贴板";
+"panel.editSnippet" = "编辑 Snippet";
+"panel.makeSnippet" = "设为 Snippet";
+"panel.copy" = "复制到剪贴板";
+
+// MARK: - Tabs / Filter
+"tab.all" = "全部";
+"tab.text" = "文本";
+"tab.images" = "图片";
+"tab.links" = "链接";
+"tab.files" = "文件";
+"tab.snippets" = "Snippets";
+"tab.favorites" = "收藏";
+"date.anytime" = "全部时间";
+"date.today" = "今天";
+"date.pastWeek" = "过去一周";
+"date.pastMonth" = "过去一月";
+"multiSelect.count" = "已选 %lld 项";
+
+// MARK: - Empty states
+"empty.noHistory.title" = "还没有剪贴板历史";
+"empty.noHistory.subtitle" = "复制任意文本、链接或图片即可开始记录";
+"empty.noText.title" = "还没有文本";
+"empty.noText.subtitle" = "复制一段文本即可在这里看到";
+"empty.noImages.title" = "还没有图片";
+"empty.noImages.subtitle" = "从任意 app 复制图片即可在这里看到";
+"empty.noLinks.title" = "还没有链接";
+"empty.noLinks.subtitle" = "复制一个 URL 即可在这里看到";
+"empty.noFiles.title" = "还没有文件";
+"empty.noFiles.subtitle" = "从 Finder 复制文件即可在这里看到";
+"empty.noSnippets.title" = "还没有 Snippet";
+"empty.noSnippets.subtitle" = "在「全部」里点 ⚡ 即可把文本升级为 Snippet";
+"empty.noFavorites.title" = "还没有收藏";
+"empty.noFavorites.subtitle" = "点任何条目上的 ☆ 即可永久收藏";
+"empty.noSearchResults.title" = "没有匹配";
+"empty.noSearchResults.subtitle" = "换个搜索关键字或清空搜索框";
+
+// MARK: - Snippet sheet
+"sheet.snippet.create" = "创建 Snippet";
+"sheet.snippet.edit" = "编辑 Snippet";
+"sheet.snippet.triggerWord" = "触发词";
+"sheet.snippet.triggerWordPlaceholder" = "tt";
+"sheet.snippet.triggerHint" = "在任何 app 输入「触发词 + 空格」即可自动展开";
+"sheet.snippet.contentPreview" = "内容预览";
+"sheet.snippet.cancel" = "取消";
+"sheet.snippet.createAction" = "创建";
+"sheet.snippet.save" = "保存";
+"sheet.snippet.remove" = "删除 Snippet";
+
+// MARK: - Favorite sheet (6.8)
+"sheet.favorite.create" = "加入收藏";
+"sheet.favorite.edit" = "编辑收藏";
+"sheet.favorite.title" = "标题";
+"sheet.favorite.titlePlaceholder" = "可选 — 留空则展示原内容";
+"sheet.favorite.category" = "分类";
+"sheet.favorite.categoryPlaceholder" = "输入分类名（或从下方选择）";
+"sheet.favorite.categoryHint" = "你创建的分类下次将出现在这里";
+"sheet.favorite.categoryPickHelp" = "从已有分类中选择";
+"sheet.favorite.contentPreview" = "内容";
+"sheet.favorite.cancel" = "取消";
+"sheet.favorite.save" = "加入收藏";
+"sheet.favorite.update" = "保存";
+"sheet.favorite.remove" = "取消收藏";
+
+// MARK: - Favorite chips (6.8)
+"favoriteChips.all" = "全部";
+"favoriteChips.uncategorized" = "未分类";
+
+// MARK: - Context menu / actions
+"context.copy" = "复制";
+"context.addFavorite" = "加入收藏";
+"context.removeFavorite" = "取消收藏";
+"context.makeSnippet" = "设为 Snippet…";
+"context.editSnippet" = "编辑 Snippet…";
+"context.removeSnippet" = "删除 Snippet";
+
+// MARK: - Hotkey conflict toast
+"hotkeyConflict.title" = "快捷键冲突";
+"hotkeyConflict.subtitle" = "⌘%@ 已被其他 app 占用";
+"hotkeyConflict.change" = "改键…";
+
+// MARK: - Hover preview
+"hover.link.openInBrowser" = "在浏览器中打开";
+"hover.snippet.uses" = "次使用";
+"hover.imageUnavailable" = "图片不可用";
+"hover.fileMoved" = "文件已不在原路径";
+"hover.fileOpenHint" = "双击打开";
+"hover.linkOpenHint" = "双击在浏览器中打开";
+
+// MARK: - Snippets window
+"snippets.title" = "Snippets";
+"snippets.searchPlaceholder" = "搜索 Snippets";
+"snippets.usedTimes" = "已使用 %lld 次";
+"snippets.triggerHint" = "/%@";
+
+// MARK: - Toasts
+"toast.copied" = "已复制";
+
+// MARK: - Errors
+"error.title" = "错误";
